@@ -7,6 +7,7 @@ import { ASSET_PATHS } from "@/app/lib/assetUrls";
 interface PaymentModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onConfirm?: () => void;
   productName: string;
   productImage: string;
   quantity: number;
@@ -18,6 +19,7 @@ type PaymentMethod = "wallet" | "card" | "crypto";
 export default function PaymentModal({
   isOpen,
   onClose,
+  onConfirm,
   productName,
   productImage,
   quantity,
@@ -35,7 +37,11 @@ export default function PaymentModal({
 
   const handleConfirm = () => {
     console.log("Payment confirmed with:", selectedPayment);
-    onClose();
+    if (onConfirm) {
+      onConfirm();
+    } else {
+      onClose();
+    }
   };
 
   return (

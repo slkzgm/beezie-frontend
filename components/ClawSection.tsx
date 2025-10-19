@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import { ASSET_PATHS } from "@/app/lib/assetUrls";
 import PaymentModal from "./PaymentModal";
+import RevealModal from "./RevealModal";
+import { mockRevealItems } from "@/app/lib/mockRevealData";
 
 const heroImage = ASSET_PATHS.clawHero;
 const clawAssets = ASSET_PATHS.claw;
@@ -13,6 +15,14 @@ const confettiIcons = clawAssets.confetti;
 export default function ClawSection() {
   const [quantity, setQuantity] = useState(1);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [isRevealModalOpen, setIsRevealModalOpen] = useState(false);
+
+  const handlePaymentConfirm = () => {
+    setIsPaymentModalOpen(false);
+    setTimeout(() => {
+      setIsRevealModalOpen(true);
+    }, 300);
+  };
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText("https://beezie.io/ref/user123");
@@ -135,8 +145,8 @@ export default function ClawSection() {
                   </div>
                 </button>
               </div>
-              <div className="relative w-[80px] h-[80px] md:w-auto md:h-auto shrink-0 md:absolute md:left-[76.36%] md:w-[19.57%] md:aspect-square md:top-[13.56%]" data-node-id="1:1581">
-                <Image alt="" src={clawAssets.ctaIllustration} fill className="object-contain" sizes="(max-width: 768px) 80px, 150px" />
+              <div className="relative w-[80px] h-[80px] md:absolute md:right-6 md:top-6 md:w-[100px] md:h-[100px] shrink-0 z-10" data-node-id="1:1581">
+                <Image alt="Referral illustration" src={clawAssets.ctaIllustration} fill className="object-contain" sizes="(max-width: 768px) 80px, 100px" />
               </div>
             </div>
             <div className="absolute aspect-[20/20] left-[93.22%] right-[6.39%] top-[calc(50%+-83.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1585">
@@ -196,10 +206,19 @@ export default function ClawSection() {
       <PaymentModal
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
+        onConfirm={handlePaymentConfirm}
         productName="Multi-Category Claw"
         productImage={ASSET_PATHS.payment.productMultiCategory}
         quantity={quantity}
         unitPrice={30}
+      />
+
+      <RevealModal
+        isOpen={isRevealModalOpen}
+        onClose={() => setIsRevealModalOpen(false)}
+        items={mockRevealItems}
+        expirationMinutes={4}
+        expirationSeconds={29}
       />
     </div>
   );
