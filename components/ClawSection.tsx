@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { ASSET_PATHS } from "@/app/lib/assetUrls";
 import PaymentModal from "./PaymentModal";
@@ -24,6 +24,9 @@ export default function ClawSection() {
   const [quantity, setQuantity] = useState(1);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
   const [isRevealModalOpen, setIsRevealModalOpen] = useState(false);
+  const [isPriceAnimating, setIsPriceAnimating] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isCelebrating, setIsCelebrating] = useState(false);
 
   const handlePaymentConfirm = () => {
     setIsPaymentModalOpen(false);
@@ -34,7 +37,35 @@ export default function ClawSection() {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText("https://beezie.io/ref/user123");
+    setIsCopied(true);
+    setIsCelebrating(true);
   };
+
+  useEffect(() => {
+    if (!isCopied) return;
+    
+    const copiedTimer = setTimeout(() => setIsCopied(false), 850);
+    const celebrateTimer = setTimeout(() => setIsCelebrating(false), 600);
+    
+    return () => {
+      clearTimeout(copiedTimer);
+      clearTimeout(celebrateTimer);
+    };
+  }, [isCopied]);
+
+  useEffect(() => {
+    setIsPriceAnimating(false);
+    const triggerTimer = setTimeout(() => {
+      setIsPriceAnimating(true);
+    }, 10);
+    const resetTimer = setTimeout(() => {
+      setIsPriceAnimating(false);
+    }, 350);
+    return () => {
+      clearTimeout(triggerTimer);
+      clearTimeout(resetTimer);
+    };
+  }, [quantity]);
 
   const isDecreaseDisabled = quantity === 1;
   const totalPrice = UNIT_PRICE * quantity;
@@ -68,26 +99,27 @@ export default function ClawSection() {
             </div>
             <div className="content-stretch flex flex-col gap-4 md:gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1551">
               <div className="content-stretch flex gap-3 md:gap-[16px] items-center relative shrink-0 w-full" data-node-id="1:1552">
-                <div className="flex flex-col font-['Inter:Bold',_sans-serif] font-bold justify-center leading-[0] not-italic relative shrink-0 text-[24px] md:text-[28px] text-white whitespace-nowrap" data-node-id="1:1553">
+                <div className={`flex flex-col font-['Inter:Bold',_sans-serif] font-bold justify-center leading-[0] not-italic relative shrink-0 text-[24px] md:text-[28px] text-white whitespace-nowrap ${isPriceAnimating ? 'value-change-animation' : ''}`} data-node-id="1:1553">
                   <p className="leading-[normal]">{usdFormatter.format(totalPrice)}</p>
                 </div>
-                <div className="backdrop-blur-[3.1px] backdrop-filter bg-gradient-gold box-border content-stretch flex gap-[5px] items-center justify-center px-[8px] py-[4px] relative rounded-[4px] shrink-0" data-node-id="1:1554">
-                  <div className="relative shrink-0 size-[8px]" data-name="Vector" data-node-id="1:1555">
+                <div className="group backdrop-blur-[3.1px] backdrop-filter bg-gradient-gold box-border content-stretch flex gap-[5px] items-center justify-center px-[8px] py-[4px] relative rounded-[4px] shrink-0 overflow-hidden transition-all duration-300 hover:shadow-gold-glow-sm" data-node-id="1:1554">
+                  <div className="shimmer-effect animate-shimmer absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="relative shrink-0 size-[8px] z-10 transition-transform duration-300 group-hover:rotate-12" data-name="Vector" data-node-id="1:1555">
                     <Image alt="" src={clawAssets.pointsIcon} fill className="object-contain" sizes="8px" />
                   </div>
-                  <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[12px] text-black text-center whitespace-nowrap" data-node-id="1:1556">
+                  <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[12px] text-black text-center whitespace-nowrap z-10" data-node-id="1:1556">
                     <p className="leading-[normal]">{totalPoints} points</p>
                   </div>
                 </div>
               </div>
               <div className="content-stretch flex gap-3 md:gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1557">
-                <div className="bg-[#232323] box-border content-stretch flex gap-4 md:gap-[24px] h-[45px] md:h-[51px] items-center justify-center overflow-clip px-4 md:px-[24px] py-[12px] md:py-[16px] relative rounded-[10px] shrink-0" data-name="Buttons" data-node-id="1:1558">
+                <div className="bg-[#232323] box-border content-stretch flex gap-4 md:gap-[24px] h-[45px] md:h-[51px] items-center justify-center overflow-clip px-4 md:px-[24px] py-[12px] md:py-[16px] relative rounded-[10px] shrink-0 transition-all duration-300 hover:bg-[#232323]/80" data-name="Buttons" data-node-id="1:1558">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                     type="button"
                     disabled={isDecreaseDisabled}
-                    className={`relative shrink-0 size-[18px] md:size-[20px] transition-opacity ${
-                      isDecreaseDisabled ? "cursor-not-allowed opacity-40" : "hover:opacity-70"
+                    className={`relative shrink-0 size-[18px] md:size-[20px] transition-all duration-150 ${
+                      isDecreaseDisabled ? "cursor-not-allowed opacity-40" : "hover:opacity-70 hover:scale-110 active:scale-90 active:opacity-50"
                     }`}
                     data-name="Frame"
                     data-node-id="1:1559"
@@ -100,7 +132,7 @@ export default function ClawSection() {
                   <button
                     onClick={() => setQuantity(quantity + 1)}
                     type="button"
-                    className="relative shrink-0 size-[18px] md:size-[20px] hover:opacity-70 transition-opacity"
+                    className="relative shrink-0 size-[18px] md:size-[20px] transition-all duration-150 hover:opacity-70 hover:scale-110 active:scale-90 active:opacity-50"
                     data-name="Frame"
                     data-node-id="1:1562"
                   >
@@ -109,11 +141,12 @@ export default function ClawSection() {
                 </div>
                 <button
                   onClick={() => setIsPaymentModalOpen(true)}
-                  className="bg-gradient-gold box-border content-stretch flex flex-1 gap-[16px] h-[45px] md:h-[51px] items-center justify-center min-h-px overflow-clip px-6 md:px-[72px] py-[12px] md:py-[16px] relative rounded-[10px] shadow-[0px_0px_10px_0px_rgba(255,176,0,0.35)] shrink-0 hover:shadow-[0px_0px_15px_0px_rgba(255,176,0,0.5)] active:scale-[0.98] transition-all"
+                  className="group bg-gradient-gold box-border content-stretch flex flex-1 gap-[16px] h-[45px] md:h-[51px] items-center justify-center min-h-px overflow-hidden px-6 md:px-[72px] py-[12px] md:py-[16px] relative rounded-[10px] shadow-glow shrink-0 transition-all duration-300 hover:shadow-[0px_0px_20px_0px_rgba(255,176,0,0.6)] active:scale-[0.98]"
                   data-name="Buttons"
                   data-node-id="1:1564"
                 >
-                  <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[15px] md:text-[16px] text-black text-center whitespace-nowrap" data-node-id="1:1565">
+                  <div className="shimmer-effect animate-shimmer absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[15px] md:text-[16px] text-black text-center whitespace-nowrap z-10" data-node-id="1:1565">
                     <p className="leading-[normal]">Start Now</p>
                   </div>
                 </button>
@@ -131,8 +164,8 @@ export default function ClawSection() {
                 <p className="leading-[normal]">Average Value: {usdFormatter.format(totalAverageValue)}</p>
               </div>
             </div>
-            <button className="border-[#3a3a3a] border-b-0 border-l border-r-0 border-solid border-t-0 box-border content-stretch flex flex-1 gap-2 md:gap-[8px] items-center justify-center px-2 md:px-0 py-2 md:py-[8px] relative shrink-0 hover:opacity-70 transition-opacity" data-node-id="1:1570">
-              <div className="relative shrink-0 size-[14px] md:size-[16px]" data-name="Frame" data-node-id="1:1571">
+            <button className="group border-[#3a3a3a] border-b-0 border-l border-r-0 border-solid border-t-0 box-border content-stretch flex flex-1 gap-2 md:gap-[8px] items-center justify-center px-2 md:px-0 py-2 md:py-[8px] relative shrink-0 transition-all duration-300 hover:opacity-70 hover:bg-[#232323]/30" data-node-id="1:1570">
+              <div className="relative shrink-0 size-[14px] md:size-[16px] transition-transform duration-300 group-hover:scale-110" data-name="Frame" data-node-id="1:1571">
                 <Image alt="" src={clawAssets.viewOddsIcon} fill className="object-contain" sizes="16px" />
               </div>
               <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[13px] md:text-[16px] text-center text-white" data-node-id="1:1573">
@@ -142,7 +175,7 @@ export default function ClawSection() {
           </div>
         </div>
         <div className="border border-[rgba(255,255,255,0.28)] border-solid min-h-[160px] md:min-h-[177px] md:h-auto relative rounded-[15px] shrink-0 w-full" data-node-id="1:1574">
-          <div className="min-h-[160px] md:min-h-[177px] overflow-clip relative rounded-[inherit] w-full p-5 md:px-6 md:py-6" style={{ background: "linear-gradient(96deg, #1A1A1A 2.9%, #232323 37.2%, #2A2A2A 70.9%, #3A3A3A 97.26%)" }}>
+          <div className="min-h-[160px] md:min-h-[177px] overflow-clip relative rounded-[inherit] w-full p-5 md:px-6 md:py-6 group" style={{ background: "linear-gradient(96deg, #1A1A1A 2.9%, #232323 37.2%, #2A2A2A 70.9%, #3A3A3A 97.26%)" }}>
             <div className="flex flex-row md:flex-col gap-4 md:gap-[24px] items-start justify-between relative w-full md:w-auto" data-node-id="1:1575">
               <div className="flex flex-col gap-4 md:gap-[24px] items-start flex-1 md:max-w-[60%] lg:max-w-[65%]">
                 <div className="content-stretch flex flex-col gap-2 md:gap-[8px] items-start leading-[0] not-italic relative shrink-0 w-full" data-node-id="1:1576">
@@ -155,66 +188,74 @@ export default function ClawSection() {
                 </div>
                 <button
                   onClick={handleCopyLink}
-                  className="bg-[#3a3a3a] box-border content-stretch flex gap-[8px] items-center justify-center px-5 md:px-[24px] py-2.5 md:py-[10px] relative rounded-[7px] shrink-0 hover:bg-[#3a3a3a]/80 active:scale-[0.98] transition-all"
+                  className="interactive-scale bg-[#3a3a3a] box-border content-stretch flex gap-[8px] items-center justify-center px-5 md:px-[24px] py-2.5 md:py-[10px] relative rounded-[7px] shrink-0 hover:bg-[#3a3a3a]/80 active:scale-[0.98] transition-all duration-300"
                   data-node-id="1:1579"
                 >
-                  <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[14px] md:text-[16px] text-center text-white whitespace-nowrap" data-node-id="1:1580">
-                    <p className="leading-[normal]">Copy Referral Link</p>
+                  <div 
+                    key={isCopied ? "copied" : "copy"}
+                    className={`fade-slide-in flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[14px] md:text-[16px] text-center whitespace-nowrap ${
+                      isCopied ? "text-yellow-400" : "text-white"
+                    }`} 
+                    data-node-id="1:1580"
+                  >
+                    <p className="leading-[normal]">{isCopied ? "Link Copied!" : "Copy Referral Link"}</p>
                   </div>
                 </button>
               </div>
-              <div className="relative w-[80px] h-[80px] md:absolute md:right-6 md:top-6 md:w-[100px] md:h-[100px] shrink-0 z-10" data-node-id="1:1581">
+              <div className={`relative w-[80px] h-[80px] md:absolute md:right-6 md:top-6 md:w-[100px] md:h-[100px] shrink-0 z-10 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3 ${
+                isCelebrating ? "celebrate-bounce" : ""
+              }`} data-node-id="1:1581">
                 <Image alt="Referral illustration" src={clawAssets.ctaIllustration} fill className="object-contain" sizes="(max-width: 768px) 80px, 100px" />
               </div>
             </div>
-            <div className="absolute aspect-[20/20] left-[93.22%] right-[6.39%] top-[calc(50%+-83.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1585">
+            <div className="float-animation absolute aspect-[20/20] left-[93.22%] right-[6.39%] top-[calc(50%+-83.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1585">
               <Image alt="" src={confettiIcons[0]} fill className="object-contain" sizes="24px" />
             </div>
-            <div className="absolute aspect-[20/20] left-[97.09%] right-[2.52%] top-[calc(50%+-81.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1586">
+            <div className="float-animation-delayed absolute aspect-[20/20] left-[97.09%] right-[2.52%] top-[calc(50%+-81.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1586">
               <Image alt="" src={confettiIcons[1]} fill className="object-contain" sizes="24px" />
             </div>
-            <div className="absolute aspect-[20/20] left-[90.7%] right-[8.72%] top-[calc(50%+-76px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1587">
+            <div className="float-animation absolute aspect-[20/20] left-[90.7%] right-[8.72%] top-[calc(50%+-76px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1587">
               <Image alt="" src={confettiIcons[2]} fill className="object-contain" sizes="24px" />
             </div>
-            <div className="absolute aspect-[20/20] left-[99.03%] right-[0.58%] top-[calc(50%+-62.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1588">
+            <div className="float-animation-delayed absolute aspect-[20/20] left-[99.03%] right-[0.58%] top-[calc(50%+-62.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1588">
               <Image alt="" src={confettiIcons[1]} fill className="object-contain" sizes="24px" />
             </div>
-            <div className="absolute aspect-[20/20] left-[95.93%] right-[3.68%] top-[calc(50%+-52.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1589">
+            <div className="float-animation absolute aspect-[20/20] left-[95.93%] right-[3.68%] top-[calc(50%+-52.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1589">
               <Image alt="" src={confettiIcons[1]} fill className="object-contain" sizes="24px" />
             </div>
-            <div className="absolute aspect-[20/20] left-[94.77%] right-[4.84%] top-[calc(50%+-67.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1590">
+            <div className="float-animation-delayed absolute aspect-[20/20] left-[94.77%] right-[4.84%] top-[calc(50%+-67.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1590">
               <Image alt="" src={confettiIcons[1]} fill className="object-contain" sizes="24px" />
             </div>
-            <div className="absolute aspect-[20/20] left-[97.87%] right-[1.36%] top-[calc(50%+-37.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1591">
+            <div className="float-animation absolute aspect-[20/20] left-[97.87%] right-[1.36%] top-[calc(50%+-37.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1591">
               <Image alt="" src={confettiIcons[3]} fill className="object-contain" sizes="24px" />
             </div>
-            <div className="absolute aspect-[20/20] left-[90.12%] right-[9.11%] top-[calc(50%+-60.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1592">
+            <div className="float-animation-delayed absolute aspect-[20/20] left-[90.12%] right-[9.11%] top-[calc(50%+-60.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1592">
               <Image alt="" src={confettiIcons[4]} fill className="object-contain" sizes="24px" />
             </div>
           </div>
         </div>
         <div className="bg-[#1a1a1a] box-border content-stretch flex items-center justify-between overflow-clip px-4 md:px-[27px] py-6 md:py-[40px] relative rounded-[15px] shrink-0 w-full gap-2" data-node-id="1:1593">
-          <div className="content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1594">
-            <div className="relative shrink-0 size-[24px] md:size-[30px]" data-name="Frame" data-node-id="1:1595">
+          <div className="group content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1594">
+            <div className="relative shrink-0 size-[24px] md:size-[30px] transition-transform duration-300 group-hover:scale-105" data-name="Frame" data-node-id="1:1595">
               <Image alt="Vault icon" src={clawAssets.featureVault} fill className="object-contain" sizes="30px" />
             </div>
-            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full" data-node-id="1:1597">
+            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full transition-colors duration-300 group-hover:text-white" data-node-id="1:1597">
               <p className="leading-[16px] md:leading-[20px]">Securely vaulted at Brink&apos;s</p>
             </div>
           </div>
-          <div className="content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1598">
-            <div className="relative shrink-0 size-[24px] md:size-[30px]" data-name="Frame" data-node-id="1:1599">
+          <div className="group content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1598">
+            <div className="relative shrink-0 size-[24px] md:size-[30px] transition-transform duration-300 group-hover:scale-105" data-name="Frame" data-node-id="1:1599">
               <Image alt="Swap icon" src={clawAssets.featureSwap} fill className="object-contain" sizes="30px" />
             </div>
-            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full" data-node-id="1:1601">
+            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full transition-colors duration-300 group-hover:text-white" data-node-id="1:1601">
               <p className="leading-[16px] md:leading-[20px]">SWAP up to 90% FMV</p>
             </div>
           </div>
-          <div className="content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1602">
-            <div className="relative shrink-0 size-[24px] md:size-[30px]" data-name="Frame" data-node-id="1:1603">
+          <div className="group content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1602">
+            <div className="relative shrink-0 size-[24px] md:size-[30px] transition-transform duration-300 group-hover:scale-105" data-name="Frame" data-node-id="1:1603">
               <Image alt="Redeem icon" src={clawAssets.featureRedeem} fill className="object-contain" sizes="30px" />
             </div>
-            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full" data-node-id="1:1605">
+            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full transition-colors duration-300 group-hover:text-white" data-node-id="1:1605">
               <p className="leading-[16px] md:leading-[20px]">Redeem anytime, globally</p>
             </div>
           </div>
