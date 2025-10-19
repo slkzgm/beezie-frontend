@@ -60,7 +60,7 @@ export default function PaymentModal({
             </p>
             <button
               onClick={onClose}
-              className="w-6 h-6 flex items-center justify-center text-white/60 hover:text-white transition-colors relative"
+              className="w-6 h-6 flex items-center justify-center text-white/60 hover:text-white transition-all duration-300 relative hover:scale-110 hover:rotate-90 active:scale-95"
             >
               <Image
                 alt="Close"
@@ -95,8 +95,9 @@ export default function PaymentModal({
                 <p className="font-['Inter:Medium',_sans-serif] md:font-['Inter:Semi_Bold',_sans-serif] font-medium md:font-semibold text-[16px] md:text-[18px] text-white leading-[22px] whitespace-nowrap">
                   ${totalPrice}
                 </p>
-                <div className="backdrop-blur-[3.1px] bg-gradient-gold flex gap-[5px] items-center justify-center px-1 md:px-2 py-0.5 md:py-1 rounded-[4px] whitespace-nowrap">
-                  <div className="w-2 h-2 relative shrink-0">
+                <div className="group backdrop-blur-[3.1px] bg-gradient-gold flex gap-[5px] items-center justify-center px-1 md:px-2 py-0.5 md:py-1 rounded-[4px] whitespace-nowrap overflow-hidden relative transition-all duration-300 hover:shadow-gold-glow-sm">
+                  <div className="shimmer-effect absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="w-2 h-2 relative shrink-0 z-10 transition-transform duration-300 group-hover:rotate-12">
                     <Image
                       alt=""
                       src={clawAssets.pointsIcon}
@@ -104,7 +105,7 @@ export default function PaymentModal({
                       className="object-contain"
                     />
                   </div>
-                  <p className="font-['Inter:Medium',_sans-serif] font-medium text-[12px] text-black">
+                  <p className="font-['Inter:Medium',_sans-serif] font-medium text-[12px] text-black z-10">
                     {totalPoints} points
                   </p>
                 </div>
@@ -119,18 +120,18 @@ export default function PaymentModal({
               <div className="flex flex-col gap-3.5 md:gap-4 w-full">
                 <button
                   onClick={() => setSelectedPayment("wallet")}
-                  className={`bg-[#1a1a1a] rounded-[10px] min-h-[84px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-4 transition-all ${
+                  className={`bg-[#1a1a1a] rounded-[10px] min-h-[84px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-4 transition-all duration-300 hover:bg-[#1a1a1a]/80 active:scale-[0.99] ${
                     selectedPayment === "wallet"
-                      ? "border border-[#ffca28]"
-                      : "border border-transparent"
+                      ? "border border-[#ffca28] shadow-gold-glow-sm"
+                      : "border border-transparent hover:border-[#3a3a3a]"
                   }`}
                 >
                   <div className="flex gap-4 items-center flex-1 min-w-0">
-                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all" style={{
+                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-400 ease-smooth" style={{
                       borderColor: selectedPayment === "wallet" ? "#ffca28" : "#b4b4b4"
                     }}>
                       {selectedPayment === "wallet" && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#ffca28]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#ffca28] animate-in zoom-in-75 duration-300 ease-smooth" />
                       )}
                     </div>
                     <div className="flex flex-col gap-2 items-start min-w-0">
@@ -154,18 +155,18 @@ export default function PaymentModal({
 
                 <button
                   onClick={() => setSelectedPayment("card")}
-                  className={`bg-[#1a1a1a] rounded-[10px] min-h-[84px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-6 transition-all ${
+                  className={`bg-[#1a1a1a] rounded-[10px] min-h-[84px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-6 transition-all duration-300 hover:bg-[#1a1a1a]/80 active:scale-[0.99] ${
                     selectedPayment === "card"
-                      ? "border border-[#ffca28]"
-                      : "border border-transparent"
+                      ? "border border-[#ffca28] shadow-gold-glow-sm"
+                      : "border border-transparent hover:border-[#3a3a3a]"
                   }`}
                 >
                   <div className="flex gap-4 items-center flex-1 min-w-0">
-                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all" style={{
+                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-400 ease-smooth" style={{
                       borderColor: selectedPayment === "card" ? "#ffca28" : "#b4b4b4"
                     }}>
                       {selectedPayment === "card" && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#ffca28]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#ffca28] animate-in zoom-in-75 duration-300 ease-smooth" />
                       )}
                     </div>
                     <div className="flex flex-col gap-1 items-start min-w-0">
@@ -215,18 +216,18 @@ export default function PaymentModal({
 
                 <button
                   onClick={() => setSelectedPayment("crypto")}
-                  className={`bg-[#1a1a1a] rounded-[10px] min-h-[78px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-3 transition-all ${
+                  className={`bg-[#1a1a1a] rounded-[10px] min-h-[78px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-3 transition-all duration-300 hover:bg-[#1a1a1a]/80 active:scale-[0.99] ${
                     selectedPayment === "crypto"
-                      ? "border border-[#ffca28]"
-                      : "border border-transparent"
+                      ? "border border-[#ffca28] shadow-gold-glow-sm"
+                      : "border border-transparent hover:border-[#3a3a3a]"
                   }`}
                 >
                   <div className="flex gap-4 items-center flex-1 min-w-0">
-                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all" style={{
+                    <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-400 ease-smooth" style={{
                       borderColor: selectedPayment === "crypto" ? "#ffca28" : "#b4b4b4"
                     }}>
                       {selectedPayment === "crypto" && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#ffca28]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#ffca28] animate-in zoom-in-75 duration-300 ease-smooth" />
                       )}
                     </div>
                     <div className="flex flex-col gap-1 items-start min-w-0">
@@ -278,9 +279,10 @@ export default function PaymentModal({
 
             <button
               onClick={handleConfirm}
-              className="bg-gradient-gold h-[45px] md:h-[51px] flex items-center justify-center rounded-[10px] shadow-[0px_0px_10px_0px_rgba(255,176,0,0.35)] hover:shadow-[0px_0px_15px_0px_rgba(255,176,0,0.5)] active:scale-[0.98] transition-all w-full"
+              className="group bg-gradient-gold h-[45px] md:h-[51px] flex items-center justify-center rounded-[10px] shadow-glow hover:shadow-[0px_0px_20px_0px_rgba(255,176,0,0.6)] active:scale-[0.98] transition-all w-full overflow-hidden relative"
             >
-              <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold text-[16px] text-black">
+              <div className="shimmer-effect animate-shimmer absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+              <p className="font-['Inter:Semi_Bold',_sans-serif] font-semibold text-[16px] text-black relative z-10">
                 Confirm
               </p>
             </button>
