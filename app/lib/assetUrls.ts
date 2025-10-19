@@ -64,6 +64,25 @@ export const ASSET_PATHS = {
       "/assets/claw/claw-confetti-5.svg",
     ],
   },
+
+  payment: {
+    productMultiCategory: "/assets/payment/product-multi-category.png",
+    radioSelected: "/assets/payment/radio-selected.svg",
+    radioUnselected: "/assets/payment/radio-unselected.svg",
+    closeIcon: "/assets/payment/close-icon.svg",
+    cards: {
+      visa: "/assets/payment/cards/visa.svg",
+      mastercard: "/assets/payment/cards/mastercard.svg",
+      googlepay: "/assets/payment/cards/googlepay.svg",
+      applepay: "/assets/payment/cards/applepay.svg",
+    },
+    crypto: {
+      eth: "/assets/payment/crypto/eth.png",
+      solana: "/assets/payment/crypto/solana.png",
+      usdc: "/assets/payment/crypto/usdc.png",
+      tether: "/assets/payment/crypto/tether.png",
+    },
+  },
 } as const;
 
 export type AssetPaths = typeof ASSET_PATHS;

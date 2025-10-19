@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import { ASSET_PATHS } from "@/app/lib/assetUrls";
+import PaymentModal from "./PaymentModal";
 
 const heroImage = ASSET_PATHS.clawHero;
 const clawAssets = ASSET_PATHS.claw;
@@ -11,6 +12,7 @@ const confettiIcons = clawAssets.confetti;
 
 export default function ClawSection() {
   const [quantity, setQuantity] = useState(1);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText("https://beezie.io/ref/user123");
@@ -28,22 +30,22 @@ export default function ClawSection() {
           priority
         />
       </div>
-      <div className="flex flex-col gap-6 items-start relative w-full lg:flex-[516]" data-node-id="1:1545">
-        <div className="bg-[#1a1a1a] box-border content-stretch flex flex-col gap-[24px] items-start overflow-clip p-[32px] relative rounded-[20px] shrink-0 w-full" data-node-id="1:1546">
-          <div className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1547">
-            <div className="content-stretch flex flex-col gap-[16px] items-start leading-[0] not-italic relative shrink-0 w-full" data-node-id="1:1548">
-              <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center relative shrink-0 text-[24px] text-white whitespace-nowrap" data-node-id="1:1549">
+      <div className="flex flex-col gap-4 md:gap-6 items-start relative w-full lg:flex-[516]" data-node-id="1:1545">
+        <div className="bg-[#1a1a1a] box-border content-stretch flex flex-col gap-5 md:gap-[24px] items-start overflow-clip p-5 md:p-[32px] relative rounded-[20px] shrink-0 w-full" data-node-id="1:1546">
+          <div className="content-stretch flex flex-col gap-5 md:gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1547">
+            <div className="content-stretch flex flex-col gap-3 md:gap-[16px] items-start leading-[0] not-italic relative shrink-0 w-full" data-node-id="1:1548">
+              <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center relative shrink-0 text-[20px] md:text-[24px] text-white" data-node-id="1:1549">
                 <p className="leading-[normal]">Multi - Category 30</p>
               </div>
-              <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center min-w-full relative shrink-0 text-[#7c7c7c] text-[16px] w-[min-content]" data-node-id="1:1550">
+              <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center min-w-full relative shrink-0 text-[#7c7c7c] text-[14px] md:text-[16px] w-[min-content]" data-node-id="1:1550">
                 <p className="leading-[normal] whitespace-pre-wrap">
                   Open instantly to reveal your collectible and decide whether to hold or SWAP. Each box contains a graded or authenticated item, securely stored in our Brink&apos;s vault.
                 </p>
               </div>
             </div>
-            <div className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1551">
-              <div className="content-stretch flex gap-[16px] items-center relative shrink-0 w-full" data-node-id="1:1552">
-                <div className="flex flex-col font-['Inter:Bold',_sans-serif] font-bold justify-center leading-[0] not-italic relative shrink-0 text-[28px] text-white whitespace-nowrap" data-node-id="1:1553">
+            <div className="content-stretch flex flex-col gap-4 md:gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1551">
+              <div className="content-stretch flex gap-3 md:gap-[16px] items-center relative shrink-0 w-full" data-node-id="1:1552">
+                <div className="flex flex-col font-['Inter:Bold',_sans-serif] font-bold justify-center leading-[0] not-italic relative shrink-0 text-[24px] md:text-[28px] text-white whitespace-nowrap" data-node-id="1:1553">
                   <p className="leading-[normal]">$30</p>
                 </div>
                 <div className="backdrop-blur-[3.1px] backdrop-filter bg-gradient-gold box-border content-stretch flex gap-[5px] items-center justify-center px-[8px] py-[4px] relative rounded-[4px] shrink-0" data-node-id="1:1554">
@@ -55,30 +57,35 @@ export default function ClawSection() {
                   </div>
                 </div>
               </div>
-              <div className="content-stretch flex gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1557">
-                <div className="bg-[#232323] box-border content-stretch flex gap-[24px] h-[51px] items-center justify-center overflow-clip px-[24px] py-[16px] relative rounded-[10px] shrink-0" data-name="Buttons" data-node-id="1:1558">
+              <div className="content-stretch flex gap-3 md:gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1557">
+                <div className="bg-[#232323] box-border content-stretch flex gap-4 md:gap-[24px] h-[45px] md:h-[51px] items-center justify-center overflow-clip px-4 md:px-[24px] py-[12px] md:py-[16px] relative rounded-[10px] shrink-0" data-name="Buttons" data-node-id="1:1558">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="relative shrink-0 size-[20px] hover:opacity-70 transition-opacity"
+                    className="relative shrink-0 size-[18px] md:size-[20px] hover:opacity-70 transition-opacity"
                     data-name="Frame"
                     data-node-id="1:1559"
                   >
                     <Image alt="Decrease quantity" src={clawAssets.decrementIcon} fill className="object-contain" sizes="20px" />
                   </button>
-                  <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-center text-white whitespace-nowrap" data-node-id="1:1561">
+                  <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[15px] md:text-[16px] text-center text-white whitespace-nowrap min-w-[20px]" data-node-id="1:1561">
                     <p className="leading-[normal]">{quantity}</p>
                   </div>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="relative shrink-0 size-[20px] hover:opacity-70 transition-opacity"
+                    className="relative shrink-0 size-[18px] md:size-[20px] hover:opacity-70 transition-opacity"
                     data-name="Frame"
                     data-node-id="1:1562"
                   >
                     <Image alt="Increase quantity" src={clawAssets.incrementIcon} fill className="object-contain" sizes="20px" />
                   </button>
                 </div>
-                <button className="bg-gradient-gold box-border content-stretch flex flex-[1_0_0] gap-[16px] h-[51px] items-center justify-center min-h-px min-w-[202px] overflow-clip px-[72px] py-[16px] relative rounded-[10px] shadow-[0px_0px_10px_0px_rgba(255,176,0,0.35)] shrink-0 hover:shadow-[0px_0px_15px_0px_rgba(255,176,0,0.5)] active:scale-[0.98] transition-all" data-name="Buttons" data-node-id="1:1564">
-                  <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-black text-center whitespace-nowrap" data-node-id="1:1565">
+                <button
+                  onClick={() => setIsPaymentModalOpen(true)}
+                  className="bg-gradient-gold box-border content-stretch flex flex-1 gap-[16px] h-[45px] md:h-[51px] items-center justify-center min-h-px overflow-clip px-6 md:px-[72px] py-[12px] md:py-[16px] relative rounded-[10px] shadow-[0px_0px_10px_0px_rgba(255,176,0,0.35)] shrink-0 hover:shadow-[0px_0px_15px_0px_rgba(255,176,0,0.5)] active:scale-[0.98] transition-all"
+                  data-name="Buttons"
+                  data-node-id="1:1564"
+                >
+                  <div className="flex flex-col font-['Inter:Semi_Bold',_sans-serif] font-semibold justify-center leading-[0] not-italic relative shrink-0 text-[15px] md:text-[16px] text-black text-center whitespace-nowrap" data-node-id="1:1565">
                     <p className="leading-[normal]">Start Now</p>
                   </div>
                 </button>
@@ -90,45 +97,47 @@ export default function ClawSection() {
               <Image alt="" src={clawAssets.divider} fill className="object-cover" sizes="100vw" />
             </div>
           </div>
-          <div className="bg-[#232323] box-border content-stretch flex h-[51px] items-start px-0 py-[8px] relative rounded-[10px] shrink-0 w-full" data-node-id="1:1567">
-            <div className="box-border content-stretch flex flex-[1_0_0] flex-col gap-[8px] items-center justify-center min-h-px min-w-px px-0 py-[8px] relative rounded-[15px] shrink-0" data-node-id="1:1568">
-              <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-center text-white whitespace-nowrap" data-node-id="1:1569">
+          <div className="bg-[#232323] box-border content-stretch flex min-h-[45px] md:h-[51px] items-stretch px-0 py-2 md:py-[8px] relative rounded-[10px] shrink-0 w-full" data-node-id="1:1567">
+            <div className="box-border content-stretch flex flex-1 flex-col gap-[8px] items-center justify-center px-2 md:px-0 py-2 md:py-[8px] relative rounded-[15px] shrink-0" data-node-id="1:1568">
+              <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[13px] md:text-[16px] text-center text-white" data-node-id="1:1569">
                 <p className="leading-[normal]">Average Value: $55</p>
               </div>
             </div>
-            <button className="border-[#3a3a3a] border-b-0 border-l border-r-0 border-solid border-t-0 box-border content-stretch flex flex-[1_0_0] gap-[8px] items-center justify-center min-h-px min-w-px px-0 py-[8px] relative shrink-0 hover:opacity-70 transition-opacity" data-node-id="1:1570">
-              <div className="relative shrink-0 size-[16px]" data-name="Frame" data-node-id="1:1571">
+            <button className="border-[#3a3a3a] border-b-0 border-l border-r-0 border-solid border-t-0 box-border content-stretch flex flex-1 gap-2 md:gap-[8px] items-center justify-center px-2 md:px-0 py-2 md:py-[8px] relative shrink-0 hover:opacity-70 transition-opacity" data-node-id="1:1570">
+              <div className="relative shrink-0 size-[14px] md:size-[16px]" data-name="Frame" data-node-id="1:1571">
                 <Image alt="" src={clawAssets.viewOddsIcon} fill className="object-contain" sizes="16px" />
               </div>
-              <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-center text-white whitespace-nowrap" data-node-id="1:1573">
+              <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[13px] md:text-[16px] text-center text-white" data-node-id="1:1573">
                 <p className="leading-[normal]">View Odds</p>
               </div>
             </button>
           </div>
         </div>
-        <div className="border border-[rgba(255,255,255,0.28)] border-solid h-[177px] relative rounded-[15px] shrink-0 w-full" data-node-id="1:1574">
-          <div className="h-[177px] overflow-clip relative rounded-[inherit] w-full" style={{ background: "linear-gradient(96deg, #1A1A1A 2.9%, #232323 37.2%, #2A2A2A 70.9%, #3A3A3A 97.26%)" }}>
-            <div className="absolute content-stretch flex flex-col gap-[24px] items-start left-[4.65%] top-[13.56%]" data-node-id="1:1575">
-              <div className="content-stretch flex flex-col gap-[8px] items-start leading-[0] not-italic relative shrink-0 w-full" data-node-id="1:1576">
-                <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center relative shrink-0 text-[18px] text-white whitespace-nowrap" data-node-id="1:1577">
-                  <p className="leading-[20px]">{`Refer friends & Earn`}</p>
+        <div className="border border-[rgba(255,255,255,0.28)] border-solid min-h-[160px] md:min-h-[177px] md:h-auto relative rounded-[15px] shrink-0 w-full" data-node-id="1:1574">
+          <div className="min-h-[160px] md:min-h-[177px] overflow-clip relative rounded-[inherit] w-full p-5 md:px-6 md:py-6" style={{ background: "linear-gradient(96deg, #1A1A1A 2.9%, #232323 37.2%, #2A2A2A 70.9%, #3A3A3A 97.26%)" }}>
+            <div className="flex flex-row md:flex-col gap-4 md:gap-[24px] items-start justify-between relative w-full md:w-auto" data-node-id="1:1575">
+              <div className="flex flex-col gap-4 md:gap-[24px] items-start flex-1 md:max-w-[60%] lg:max-w-[65%]">
+                <div className="content-stretch flex flex-col gap-2 md:gap-[8px] items-start leading-[0] not-italic relative shrink-0 w-full" data-node-id="1:1576">
+                  <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center relative shrink-0 text-[16px] md:text-[18px] text-white" data-node-id="1:1577">
+                    <p className="leading-[20px]">{`Refer friends & Earn`}</p>
+                  </div>
+                  <div className="flex flex-col font-['Inter:Regular',_sans-serif] font-normal justify-center relative shrink-0 text-[#b4b4b4] text-[13px] md:text-[14px]" data-node-id="1:1578">
+                    <p className="leading-[18px] md:leading-[20px]">Refer Beezie to your friends via referral link and earn money everytime they make a transaction</p>
+                  </div>
                 </div>
-                <div className="flex flex-col font-['Inter:Regular',_sans-serif] font-normal justify-center relative shrink-0 text-[#b4b4b4] text-[14px] max-w-[65%]" data-node-id="1:1578">
-                  <p className="leading-[20px] whitespace-pre-wrap">Refer Beezie to your friends via referral link and earn money everytime they make a transaction</p>
-                </div>
+                <button
+                  onClick={handleCopyLink}
+                  className="bg-[#3a3a3a] box-border content-stretch flex gap-[8px] items-center justify-center px-5 md:px-[24px] py-2.5 md:py-[10px] relative rounded-[7px] shrink-0 hover:bg-[#3a3a3a]/80 active:scale-[0.98] transition-all"
+                  data-node-id="1:1579"
+                >
+                  <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[14px] md:text-[16px] text-center text-white whitespace-nowrap" data-node-id="1:1580">
+                    <p className="leading-[normal]">Copy Referral Link</p>
+                  </div>
+                </button>
               </div>
-              <button
-                onClick={handleCopyLink}
-                className="bg-[#3a3a3a] box-border content-stretch flex gap-[8px] items-center justify-center px-[24px] py-[10px] relative rounded-[7px] shrink-0 hover:bg-[#3a3a3a]/80 active:scale-[0.98] transition-all"
-                data-node-id="1:1579"
-              >
-                <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[16px] text-center text-white whitespace-nowrap" data-node-id="1:1580">
-                  <p className="leading-[normal]">Copy Referral Link</p>
-                </div>
-              </button>
-            </div>
-            <div className="absolute left-[76.36%] w-[19.57%] aspect-square top-[13.56%]" data-node-id="1:1581">
-              <Image alt="" src={clawAssets.ctaIllustration} fill className="object-contain" sizes="(max-width: 768px) 120px, 150px" />
+              <div className="relative w-[80px] h-[80px] md:w-auto md:h-auto shrink-0 md:absolute md:left-[76.36%] md:w-[19.57%] md:aspect-square md:top-[13.56%]" data-node-id="1:1581">
+                <Image alt="" src={clawAssets.ctaIllustration} fill className="object-contain" sizes="(max-width: 768px) 80px, 150px" />
+              </div>
             </div>
             <div className="absolute aspect-[20/20] left-[93.22%] right-[6.39%] top-[calc(50%+-83.5px)] translate-y-[-50%]" data-name="Vector" data-node-id="1:1585">
               <Image alt="" src={confettiIcons[0]} fill className="object-contain" sizes="24px" />
@@ -156,33 +165,42 @@ export default function ClawSection() {
             </div>
           </div>
         </div>
-        <div className="bg-[#1a1a1a] box-border content-stretch flex items-center justify-between overflow-clip px-[27px] py-[40px] relative rounded-[15px] shrink-0 w-full" data-node-id="1:1593">
-          <div className="content-stretch flex flex-col gap-[10px] items-center relative shrink-0" data-node-id="1:1594">
-            <div className="relative shrink-0 size-[30px]" data-name="Frame" data-node-id="1:1595">
+        <div className="bg-[#1a1a1a] box-border content-stretch flex items-center justify-between overflow-clip px-4 md:px-[27px] py-6 md:py-[40px] relative rounded-[15px] shrink-0 w-full gap-2" data-node-id="1:1593">
+          <div className="content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1594">
+            <div className="relative shrink-0 size-[24px] md:size-[30px]" data-name="Frame" data-node-id="1:1595">
               <Image alt="Vault icon" src={clawAssets.featureVault} fill className="object-contain" sizes="30px" />
             </div>
-            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[14px] text-center w-[117px]" data-node-id="1:1597">
-              <p className="leading-[20px] whitespace-pre-wrap">Securely vaulted at Brink&apos;s</p>
+            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full" data-node-id="1:1597">
+              <p className="leading-[16px] md:leading-[20px]">Securely vaulted at Brink&apos;s</p>
             </div>
           </div>
-          <div className="content-stretch flex flex-col gap-[10px] items-center relative shrink-0" data-node-id="1:1598">
-            <div className="relative shrink-0 size-[30px]" data-name="Frame" data-node-id="1:1599">
+          <div className="content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1598">
+            <div className="relative shrink-0 size-[24px] md:size-[30px]" data-name="Frame" data-node-id="1:1599">
               <Image alt="Swap icon" src={clawAssets.featureSwap} fill className="object-contain" sizes="30px" />
             </div>
-            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[14px] text-center w-[117px]" data-node-id="1:1601">
-              <p className="leading-[20px] whitespace-pre-wrap">SWAP up to 90% FMV</p>
+            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full" data-node-id="1:1601">
+              <p className="leading-[16px] md:leading-[20px]">SWAP up to 90% FMV</p>
             </div>
           </div>
-          <div className="content-stretch flex flex-col gap-[10px] items-center relative shrink-0" data-node-id="1:1602">
-            <div className="relative shrink-0 size-[30px]" data-name="Frame" data-node-id="1:1603">
+          <div className="content-stretch flex flex-col gap-2 md:gap-[10px] items-center relative flex-1" data-node-id="1:1602">
+            <div className="relative shrink-0 size-[24px] md:size-[30px]" data-name="Frame" data-node-id="1:1603">
               <Image alt="Redeem icon" src={clawAssets.featureRedeem} fill className="object-contain" sizes="30px" />
             </div>
-            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[14px] text-center w-[117px]" data-node-id="1:1605">
-              <p className="leading-[20px] whitespace-pre-wrap">Redeem anytime, globally</p>
+            <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[#b4b4b4] text-[12px] md:text-[14px] text-center max-w-full" data-node-id="1:1605">
+              <p className="leading-[16px] md:leading-[20px]">Redeem anytime, globally</p>
             </div>
           </div>
         </div>
       </div>
+
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => setIsPaymentModalOpen(false)}
+        productName="Multi-Category Claw"
+        productImage={ASSET_PATHS.payment.productMultiCategory}
+        quantity={quantity}
+        unitPrice={30}
+      />
     </div>
   );
 }
