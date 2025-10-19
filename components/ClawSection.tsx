@@ -11,6 +11,14 @@ import { mockRevealItems } from "@/app/lib/mockRevealData";
 const heroImage = ASSET_PATHS.clawHero;
 const clawAssets = ASSET_PATHS.claw;
 const confettiIcons = clawAssets.confetti;
+const UNIT_PRICE = 30;
+const AVERAGE_VALUE = 55;
+const POINTS_PER_PULL = 30;
+const usdFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 0,
+});
 
 export default function ClawSection() {
   const [quantity, setQuantity] = useState(1);
@@ -27,6 +35,11 @@ export default function ClawSection() {
   const handleCopyLink = () => {
     navigator.clipboard.writeText("https://beezie.io/ref/user123");
   };
+
+  const isDecreaseDisabled = quantity === 1;
+  const totalPrice = UNIT_PRICE * quantity;
+  const totalPoints = POINTS_PER_PULL * quantity;
+  const totalAverageValue = AVERAGE_VALUE * quantity;
 
   return (
     <div className="flex flex-col items-start gap-6 lg:flex-row relative w-full" data-node-id="1:1543">
@@ -56,14 +69,14 @@ export default function ClawSection() {
             <div className="content-stretch flex flex-col gap-4 md:gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1551">
               <div className="content-stretch flex gap-3 md:gap-[16px] items-center relative shrink-0 w-full" data-node-id="1:1552">
                 <div className="flex flex-col font-['Inter:Bold',_sans-serif] font-bold justify-center leading-[0] not-italic relative shrink-0 text-[24px] md:text-[28px] text-white whitespace-nowrap" data-node-id="1:1553">
-                  <p className="leading-[normal]">$30</p>
+                  <p className="leading-[normal]">{usdFormatter.format(totalPrice)}</p>
                 </div>
                 <div className="backdrop-blur-[3.1px] backdrop-filter bg-gradient-gold box-border content-stretch flex gap-[5px] items-center justify-center px-[8px] py-[4px] relative rounded-[4px] shrink-0" data-node-id="1:1554">
                   <div className="relative shrink-0 size-[8px]" data-name="Vector" data-node-id="1:1555">
                     <Image alt="" src={clawAssets.pointsIcon} fill className="object-contain" sizes="8px" />
                   </div>
                   <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[12px] text-black text-center whitespace-nowrap" data-node-id="1:1556">
-                    <p className="leading-[normal]">30 points</p>
+                    <p className="leading-[normal]">{totalPoints} points</p>
                   </div>
                 </div>
               </div>
@@ -71,7 +84,11 @@ export default function ClawSection() {
                 <div className="bg-[#232323] box-border content-stretch flex gap-4 md:gap-[24px] h-[45px] md:h-[51px] items-center justify-center overflow-clip px-4 md:px-[24px] py-[12px] md:py-[16px] relative rounded-[10px] shrink-0" data-name="Buttons" data-node-id="1:1558">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="relative shrink-0 size-[18px] md:size-[20px] hover:opacity-70 transition-opacity"
+                    type="button"
+                    disabled={isDecreaseDisabled}
+                    className={`relative shrink-0 size-[18px] md:size-[20px] transition-opacity ${
+                      isDecreaseDisabled ? "cursor-not-allowed opacity-40" : "hover:opacity-70"
+                    }`}
                     data-name="Frame"
                     data-node-id="1:1559"
                   >
@@ -82,6 +99,7 @@ export default function ClawSection() {
                   </div>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
+                    type="button"
                     className="relative shrink-0 size-[18px] md:size-[20px] hover:opacity-70 transition-opacity"
                     data-name="Frame"
                     data-node-id="1:1562"
@@ -110,7 +128,7 @@ export default function ClawSection() {
           <div className="bg-[#232323] box-border content-stretch flex min-h-[45px] md:h-[51px] items-stretch px-0 py-2 md:py-[8px] relative rounded-[10px] shrink-0 w-full" data-node-id="1:1567">
             <div className="box-border content-stretch flex flex-1 flex-col gap-[8px] items-center justify-center px-2 md:px-0 py-2 md:py-[8px] relative rounded-[15px] shrink-0" data-node-id="1:1568">
               <div className="flex flex-col font-['Inter:Medium',_sans-serif] font-medium justify-center leading-[0] not-italic relative shrink-0 text-[13px] md:text-[16px] text-center text-white" data-node-id="1:1569">
-                <p className="leading-[normal]">Average Value: $55</p>
+                <p className="leading-[normal]">Average Value: {usdFormatter.format(totalAverageValue)}</p>
               </div>
             </div>
             <button className="border-[#3a3a3a] border-b-0 border-l border-r-0 border-solid border-t-0 box-border content-stretch flex flex-1 gap-2 md:gap-[8px] items-center justify-center px-2 md:px-0 py-2 md:py-[8px] relative shrink-0 hover:opacity-70 transition-opacity" data-node-id="1:1570">
@@ -210,7 +228,7 @@ export default function ClawSection() {
         productName="Multi-Category Claw"
         productImage={ASSET_PATHS.payment.productMultiCategory}
         quantity={quantity}
-        unitPrice={30}
+        unitPrice={UNIT_PRICE}
       />
 
       <RevealModal

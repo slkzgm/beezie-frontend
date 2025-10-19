@@ -150,7 +150,16 @@ export default function RevealModal({
                     key={item.id}
                     className="bg-[#1a1a1a] rounded-[10px] overflow-hidden shadow-[0px_1px_2px_0px_rgba(0,0,0,0.03)] flex flex-col"
                   >
-                    <div className="relative aspect-square overflow-hidden">
+                    <div
+                      className={`relative aspect-square overflow-hidden ${
+                        item.isSwapped ? "" : "cursor-pointer"
+                      }`}
+                      onClick={() => {
+                        if (!item.isSwapped) {
+                          handleToggleItem(item.id);
+                        }
+                      }}
+                    >
                       <Image
                         src={item.imageUrl}
                         alt={item.title}
@@ -177,8 +186,12 @@ export default function RevealModal({
                         </div>
                       ) : item.isSelected ? (
                         <button
-                          onClick={() => handleToggleItem(item.id)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleToggleItem(item.id);
+                          }}
                           className="absolute right-2 top-2 w-5 h-5 md:w-6 md:h-6 rounded-[4px] bg-[#ffca28] transition-all flex items-center justify-center"
+                          type="button"
                         >
                           <svg
                             width="14"
@@ -197,8 +210,12 @@ export default function RevealModal({
                         </button>
                       ) : (
                         <button
-                          onClick={() => handleToggleItem(item.id)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleToggleItem(item.id);
+                          }}
                           className="absolute right-2 top-2 w-5 h-5 md:w-6 md:h-6 bg-white rounded-full transition-all flex items-center justify-center shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)]"
+                          type="button"
                         >
                           <svg
                             width="14"
@@ -218,8 +235,12 @@ export default function RevealModal({
 
                       {!item.isSwapped && (
                         <button
-                          onClick={() => handleDownloadPull(item.id)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleDownloadPull(item.id);
+                          }}
                           className="absolute left-2 bottom-2 bg-white rounded-[4px] p-1 shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)] hover:bg-gray-100 transition-colors"
+                          type="button"
                         >
                           <div className="w-4 h-4 relative">
                             <svg
@@ -374,4 +395,3 @@ export default function RevealModal({
     </div>
   );
 }
-
