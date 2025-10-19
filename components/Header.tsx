@@ -14,11 +14,11 @@ export default function Header() {
         </div>
 
         <nav className="hidden h-10 items-center gap-0 lg:flex">
-          <NavItem href="/marketplace" label="Marketplace" />
+          <NavItem href="#" label="Marketplace" />
           <NavItem href="/claw" label="Claw" active />
-          <NavItem href="/leaderboard" label="Leaderboard" />
-          <NavItem href="/resources" label="Resources" />
-          <NavItem href="/more" label="More" />
+          <NavItem href="#" label="Leaderboard" />
+          <NavItem href="#" label="Resources" />
+          <NavItem href="#" label="More" />
         </nav>
 
         <div className="flex items-center gap-3 md:gap-6">
