@@ -4,24 +4,29 @@
 
 :root {
   color-scheme: dark;
-  --color-background: #040715;
-  --color-surface: #060a1f;
-  --color-panel: #0b102d;
-  --color-foreground: #f4f5ff;
-  --color-accent: #7f5bff;
-  --color-accent-subtle: #9b83ff;
 }
 
 body {
   margin: 0;
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
+  background-color: #131313;
+  color: #ffffff;
+  font-family: var(--font-inter), Inter, system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  .bg-gradient-gold {
+    background: linear-gradient(180deg, #ffb000 0%, #ffca28 50%, #ffe082 100%);
+  }
+  
+  .text-gradient-gold {
+    background: linear-gradient(180deg, #ffb000 0%, #ffca28 50%, #ffe082 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 }
