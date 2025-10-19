@@ -46,11 +46,11 @@ export default function PaymentModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300 ease-smooth"
       onClick={onClose}
     >
       <div
-        className="bg-[#131313] border border-[#313131] md:border-[#313131] border-t-[#302e2e] rounded-t-[20px] md:rounded-[20px] w-full max-w-full md:max-w-[650px] md:mx-4 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom md:zoom-in-95 duration-200"
+        className="bg-[#131313] border border-[#313131] md:border-[#313131] border-t-[#302e2e] rounded-t-[20px] md:rounded-[20px] w-full max-w-full md:max-w-[650px] md:mx-4 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom-4 md:zoom-in-90 duration-[350ms] ease-smooth"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col gap-5 md:gap-6 px-5 py-6 md:px-8 md:py-8">

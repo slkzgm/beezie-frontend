@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import { ASSET_PATHS } from "@/app/lib/assetUrls";
 import PaymentModal from "./PaymentModal";
@@ -27,6 +27,7 @@ export default function ClawSection() {
   const [isPriceAnimating, setIsPriceAnimating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isCelebrating, setIsCelebrating] = useState(false);
+  const isFirstRender = useRef(true);
 
   const handlePaymentConfirm = () => {
     setIsPaymentModalOpen(false);
@@ -54,6 +55,11 @@ export default function ClawSection() {
   }, [isCopied]);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    
     setIsPriceAnimating(false);
     const triggerTimer = setTimeout(() => {
       setIsPriceAnimating(true);
