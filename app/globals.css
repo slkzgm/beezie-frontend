@@ -91,6 +91,145 @@ body {
   .float-animation-delayed {
     animation: float 3s ease-in-out infinite 1.5s;
   }
+
+  /* === Staggered Entrance Animations === */
+  .stagger-entrance {
+    @apply opacity-0 translate-y-4;
+    animation: staggerEntrance 0.6s ease-out forwards;
+  }
+
+  .stagger-entrance-delay-1 { animation-delay: 0.1s; }
+  .stagger-entrance-delay-2 { animation-delay: 0.2s; }
+  .stagger-entrance-delay-3 { animation-delay: 0.3s; }
+  .stagger-entrance-delay-4 { animation-delay: 0.4s; }
+  .stagger-entrance-delay-5 { animation-delay: 0.5s; }
+  .stagger-entrance-delay-6 { animation-delay: 0.6s; }
+
+  /* === Enhanced Card Hover === */
+  .card-hover-smooth {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  .card-hover-smooth:hover {
+    @apply scale-[1.02] shadow-lg;
+  }
+
+  /* === Image Fade-in === */
+  .image-fade-in {
+    @apply opacity-0;
+    animation: imageFadeIn 0.5s ease-out forwards;
+  }
+
+  /* === Username Highlight === */
+  .username-highlight {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  .username-highlight:hover {
+    @apply text-yellow-300 drop-shadow-sm;
+  }
+
+  /* === Reveal Modal Animations === */
+  .reveal-backdrop {
+    @apply opacity-0 backdrop-blur-none;
+    animation: revealBackdrop 0.4s ease-out forwards;
+  }
+
+  .reveal-modal-content {
+    @apply opacity-0 scale-95 translate-y-4;
+    animation: revealModalContent 0.5s ease-out forwards;
+  }
+
+  .reveal-item {
+    @apply opacity-0 translate-y-8 scale-95;
+    animation: revealItem 0.6s ease-out forwards;
+  }
+
+  .reveal-item-progressive {
+    @apply opacity-0 translate-y-12 scale-90;
+    animation: revealItemProgressive 0.8s ease-out forwards;
+  }
+
+  .reveal-item-delay-1 { animation-delay: 0.1s; }
+  .reveal-item-delay-2 { animation-delay: 0.2s; }
+  .reveal-item-delay-3 { animation-delay: 0.3s; }
+  .reveal-item-delay-4 { animation-delay: 0.4s; }
+  .reveal-item-delay-5 { animation-delay: 0.5s; }
+  .reveal-item-delay-6 { animation-delay: 0.6s; }
+  .reveal-item-delay-7 { animation-delay: 0.7s; }
+  .reveal-item-delay-8 { animation-delay: 0.8s; }
+  .reveal-item-delay-9 { animation-delay: 0.9s; }
+  .reveal-item-delay-10 { animation-delay: 1.0s; }
+
+  /* Progressive reveal delays - longer intervals for dramatic effect */
+  .reveal-progressive-delay-1 { animation-delay: 0.8s; }
+  .reveal-progressive-delay-2 { animation-delay: 1.2s; }
+  .reveal-progressive-delay-3 { animation-delay: 1.6s; }
+  .reveal-progressive-delay-4 { animation-delay: 2.0s; }
+  .reveal-progressive-delay-5 { animation-delay: 2.4s; }
+  .reveal-progressive-delay-6 { animation-delay: 2.8s; }
+  .reveal-progressive-delay-7 { animation-delay: 3.2s; }
+  .reveal-progressive-delay-8 { animation-delay: 3.6s; }
+  .reveal-progressive-delay-9 { animation-delay: 4.0s; }
+  .reveal-progressive-delay-10 { animation-delay: 4.4s; }
+
+  /* === Checkbox Animations === */
+  .checkbox-animate {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  .checkbox-animate:checked {
+    @apply scale-110;
+  }
+
+  /* === Smooth Selection Animation === */
+  .selection-button {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  .selection-button:hover {
+    @apply scale-110;
+  }
+  .selection-button:active {
+    @apply scale-95;
+  }
+
+  /* === Icon Transition === */
+  .icon-transition {
+    @apply transition-all duration-300 ease-smooth;
+  }
+
+  /* === Swap Button Effects === */
+  .swap-button-hover {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  .swap-button-hover:hover {
+    @apply scale-105 shadow-gold-glow-sm;
+  }
+  .swap-button-hover:active {
+    @apply scale-95;
+  }
+
+  /* === Timer Pulse === */
+  .timer-pulse {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  .timer-pulse.warning {
+    @apply animate-pulse text-yellow-400;
+  }
+
+  /* === Badge Appear === */
+  .badge-appear {
+    @apply opacity-0 scale-75;
+    animation: badgeAppear 0.4s ease-out forwards;
+  }
+
+  /* === Download Button === */
+  .download-button {
+    @apply transition-all duration-300 ease-smooth;
+  }
+  .download-button:hover {
+    @apply scale-105 text-yellow-300;
+  }
+  .download-button:active {
+    @apply scale-95;
+  }
 }
 
 /* ============================================
@@ -167,4 +306,102 @@ body {
 
 .celebrate-bounce {
   animation: celebrateBounce 0.6s ease-out;
+}
+
+/* Staggered entrance animation for grid items */
+@keyframes staggerEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Image fade-in for loading states */
+@keyframes imageFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Reveal Modal Animations */
+@keyframes revealBackdrop {
+  0% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    backdrop-filter: blur(8px);
+  }
+}
+
+@keyframes revealModalContent {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes revealItem {
+  0% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.95);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes revealItemProgressive {
+  0% {
+    opacity: 0;
+    transform: translateY(48px) scale(0.9);
+    filter: blur(4px);
+  }
+  30% {
+    opacity: 0.3;
+    transform: translateY(24px) scale(0.95);
+    filter: blur(2px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.05);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+@keyframes badgeAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

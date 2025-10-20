@@ -30,11 +30,37 @@ export default function RevealModal({
   const [items, setItems] = useState<RevealItem[]>(initialItems);
   const [minutes, setMinutes] = useState(expirationMinutes);
   const [seconds, setSeconds] = useState(expirationSeconds);
+  const [isVisible, setIsVisible] = useState(false);
+  const [swappedItems, setSwappedItems] = useState<Set<string>>(new Set());
+  const [useProgressiveReveal, setUseProgressiveReveal] = useState(true);
+  const [revealedItems, setRevealedItems] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     if (!isOpen) return;
 
-    const timer = setInterval(() => {
+    // Trigger entrance animations
+    const entranceTimer = setTimeout(() => setIsVisible(true), 100);
+    
+    // Trigger sequential items reveal after modal is fully visible
+    const timers: NodeJS.Timeout[] = [];
+    for (let i = 0; i < items.length; i++) {
+      const timer = setTimeout(() => {
+        setRevealedItems(prev => new Set([...prev, i]));
+      }, 600 + (i * 400)); // 600ms base + 400ms per item
+      timers.push(timer);
+    }
+
+    return () => {
+      clearTimeout(entranceTimer);
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  }, [isOpen, items.length]);
+
+  // Separate countdown timer effect
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const countdownTimer = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
       } else if (minutes > 0) {
@@ -43,8 +69,18 @@ export default function RevealModal({
       }
     }, 1000);
 
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(countdownTimer);
+    };
   }, [isOpen, minutes, seconds]);
+
+  // Reset progressive reveal when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setUseProgressiveReveal(true);
+      setRevealedItems(new Set());
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -90,6 +126,9 @@ export default function RevealModal({
   const handleSwapSelected = () => {
     if (selectedCount === 0) return;
     
+    const selectedIds = items.filter(item => item.isSelected && !item.isSwapped).map(item => item.id);
+    setSwappedItems(prev => new Set([...prev, ...selectedIds]));
+    
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.isSelected && !item.isSwapped
@@ -100,6 +139,7 @@ export default function RevealModal({
   };
 
   const handleSwapSingle = (id: string) => {
+    setSwappedItems(prev => new Set([...prev, id]));
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, isSelected: false, isSwapped: true } : item
@@ -111,18 +151,20 @@ export default function RevealModal({
     console.log("Downloading pull for item:", id);
   };
 
+  const isTimerWarning = minutes === 0 && seconds <= 30;
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm ${isVisible ? 'reveal-backdrop' : 'opacity-0 backdrop-blur-none'}`}
       onClick={onClose}
     >
       <div
-        className="bg-[#131313] relative w-full h-full md:max-w-[90vw] md:max-h-[90vh] md:rounded-[20px] overflow-hidden flex flex-col"
+        className={`bg-[#131313] relative w-full h-full md:max-w-[90vw] md:max-h-[90vh] md:rounded-[20px] overflow-hidden flex flex-col ${isVisible ? 'reveal-modal-content' : 'opacity-0 scale-95 translate-y-4'}`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 md:right-4 md:top-4 z-10 w-6 h-6 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+          className="absolute right-4 top-4 md:right-4 md:top-4 z-10 w-6 h-6 flex items-center justify-center text-white/60 hover:text-white hover:scale-110 hover:rotate-90 active:scale-95 transition-all duration-300 ease-smooth"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
@@ -149,10 +191,15 @@ export default function RevealModal({
 
             <div className="w-full max-w-[1340px] backdrop-blur-[5px] bg-[rgba(19,19,19,0.25)] rounded-[10px] overflow-hidden pb-8 md:pb-16">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4 p-3 md:p-4">
-                {items.map((item) => (
-                  <div
+                {items.map((item, index) => {
+                  const isRevealed = revealedItems.has(index);
+                  const animationClass = useProgressiveReveal 
+                    ? 'reveal-item-progressive' 
+                    : 'reveal-item';
+                  return (
+                    <div
                     key={item.id}
-                    className="bg-[#1a1a1a] rounded-[10px] overflow-hidden shadow-[0px_1px_2px_0px_rgba(0,0,0,0.03)] flex flex-col"
+                    className={`bg-[#1a1a1a] rounded-[10px] overflow-hidden shadow-[0px_1px_2px_0px_rgba(0,0,0,0.03)] flex flex-col transition-all duration-300 ease-smooth hover:scale-[1.02] hover:shadow-lg ${isRevealed ? animationClass : 'opacity-0 translate-y-12 scale-90'}`}
                   >
                     <div
                       className={`relative aspect-square overflow-hidden ${
@@ -172,7 +219,7 @@ export default function RevealModal({
                       />
                       
                       {item.isSwapped ? (
-                        <div className="absolute right-2 top-2 backdrop-blur-[3.1px] bg-[rgba(26,26,26,0.9)] rounded-[5px] px-2 md:px-2.5 py-1 md:py-1.5 flex items-center gap-1 md:gap-1.5">
+                        <div className={`absolute right-2 top-2 backdrop-blur-[3.1px] bg-[rgba(26,26,26,0.9)] rounded-[5px] px-2 md:px-2.5 py-1 md:py-1.5 flex items-center gap-1 md:gap-1.5 ${swappedItems.has(item.id) ? 'badge-appear' : ''}`}>
                           <div className="w-3 h-3 relative">
                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                               <path
@@ -188,37 +235,17 @@ export default function RevealModal({
                             Item Swapped
                           </span>
                         </div>
-                      ) : item.isSelected ? (
-                        <button
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            handleToggleItem(item.id);
-                          }}
-                          className="absolute right-2 top-2 w-5 h-5 md:w-6 md:h-6 rounded-[4px] bg-[#ffca28] transition-all flex items-center justify-center"
-                          type="button"
-                        >
-                          <svg
-                            width="14"
-                            height="14"
-                            viewBox="0 0 14 14"
-                            fill="none"
-                          >
-                            <path
-                              d="M11 4L5.5 9.5L3 7"
-                              stroke="#000000"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </button>
                       ) : (
                         <button
                           onClick={(event) => {
                             event.stopPropagation();
                             handleToggleItem(item.id);
                           }}
-                          className="absolute right-2 top-2 w-5 h-5 md:w-6 md:h-6 bg-white rounded-full transition-all flex items-center justify-center shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)]"
+                          className={`absolute right-2 top-2 w-5 h-5 md:w-6 md:h-6 selection-button flex items-center justify-center shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)] rounded-full ${
+                            item.isSelected 
+                              ? 'bg-[#ffca28]' 
+                              : 'bg-white'
+                          }`}
                           type="button"
                         >
                           <svg
@@ -226,13 +253,26 @@ export default function RevealModal({
                             height="14"
                             viewBox="0 0 14 14"
                             fill="none"
+                            className="icon-transition"
                           >
-                            <path
-                              d="M7 3.5V10.5M3.5 7H10.5"
-                              stroke="#000000"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                            />
+                            {item.isSelected ? (
+                              <path
+                                d="M11 4L5.5 9.5L3 7"
+                                stroke="#000000"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="icon-transition"
+                              />
+                            ) : (
+                              <path
+                                d="M7 3.5V10.5M3.5 7H10.5"
+                                stroke="#000000"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                className="icon-transition"
+                              />
+                            )}
                           </svg>
                         </button>
                       )}
@@ -243,7 +283,7 @@ export default function RevealModal({
                             event.stopPropagation();
                             handleDownloadPull(item.id);
                           }}
-                          className="absolute left-2 bottom-2 bg-white rounded-[4px] p-1 shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)] hover:bg-gray-100 transition-colors"
+                          className="absolute left-2 bottom-2 bg-white rounded-[4px] p-1 shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)] download-button"
                           type="button"
                         >
                           <div className="w-4 h-4 relative">
@@ -274,7 +314,7 @@ export default function RevealModal({
                       {item.isSwapped ? (
                         <button
                           onClick={() => handleDownloadPull(item.id)}
-                          className="bg-[#3a3a3a] h-[36px] md:h-[40px] rounded-[7px] flex items-center justify-center gap-2 hover:bg-[#404040] transition-colors"
+                          className="bg-[#3a3a3a] h-[36px] md:h-[40px] rounded-[7px] flex items-center justify-center gap-2 download-button"
                         >
                           <div className="w-4 h-4 relative">
                             <svg
@@ -299,7 +339,7 @@ export default function RevealModal({
                       ) : (
                         <button
                           onClick={() => handleSwapSingle(item.id)}
-                          className="bg-[#ffca28] h-[36px] md:h-[40px] rounded-[7px] flex items-center justify-center hover:bg-[#ffd54f] transition-colors"
+                          className="bg-[#ffca28] h-[36px] md:h-[40px] rounded-[7px] flex items-center justify-center swap-button-hover"
                         >
                           <span className="font-['Inter:Semi_Bold',_sans-serif] font-semibold text-[12px] md:text-[14px] text-black">
                             Swap for ${item.swapPrice}
@@ -308,7 +348,8 @@ export default function RevealModal({
                       )}
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -323,7 +364,7 @@ export default function RevealModal({
                 </p>
                 <button
                   onClick={selectedCount > 0 ? handleClearAll : handleSelectAll}
-                  className="font-['Inter:Medium',_sans-serif] font-medium text-[14px] md:text-[16px] text-white hover:text-[#ffca28] transition-colors whitespace-nowrap text-left"
+                  className="font-['Inter:Medium',_sans-serif] font-medium text-[14px] md:text-[16px] text-white hover:text-[#ffca28] transition-colors duration-300 ease-smooth whitespace-nowrap text-left"
                 >
                   {selectedCount > 0 ? "Clear all" : "Select all"}
                 </button>
@@ -333,7 +374,7 @@ export default function RevealModal({
                 <p className="font-['Inter:Medium',_sans-serif] font-medium text-[14px] text-[#b4b4b4] whitespace-nowrap">
                   Expires in:
                 </p>
-                <div className="flex items-center gap-1">
+                <div className={`flex items-center gap-1 timer-pulse ${isTimerWarning ? 'warning' : ''}`}>
                   <div className="flex items-center gap-1">
                     <span className="font-['Inter:Medium',_sans-serif] font-medium text-[14px] text-white">
                       {minutes}
@@ -359,7 +400,7 @@ export default function RevealModal({
                 <p className="font-['Inter:Medium',_sans-serif] font-medium text-[16px] text-[#b4b4b4]">
                   Expires in:
                 </p>
-                <div className="flex items-center gap-2">
+                <div className={`flex items-center gap-2 timer-pulse ${isTimerWarning ? 'warning' : ''}`}>
                   <div className="flex items-center gap-1">
                     <span className="font-['Inter:Medium',_sans-serif] font-medium text-[16px] text-white">
                       {minutes}
@@ -382,9 +423,9 @@ export default function RevealModal({
               <button
                 onClick={handleSwapSelected}
                 disabled={selectedCount === 0}
-                className={`h-[52px] md:h-[45px] px-8 md:px-16 rounded-[10px] flex items-center justify-center transition-all flex-1 md:flex-none ${
+                className={`h-[52px] md:h-[45px] px-8 md:px-16 rounded-[10px] flex items-center justify-center transition-all duration-300 ease-smooth flex-1 md:flex-none ${
                   selectedCount > 0
-                    ? "bg-gradient-gold shadow-[0px_0px_10px_0px_rgba(255,176,0,0.35)] hover:shadow-[0px_0px_15px_0px_rgba(255,176,0,0.5)]"
+                    ? "bg-gradient-gold shadow-[0px_0px_10px_0px_rgba(255,176,0,0.35)] hover:shadow-[0px_0px_15px_0px_rgba(255,176,0,0.5)] hover:scale-105 active:scale-95"
                     : "bg-gradient-gold opacity-40 cursor-not-allowed"
                 }`}
               >

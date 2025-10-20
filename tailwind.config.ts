@@ -59,6 +59,13 @@ const config: Config = {
       animation: {
         "slide-down": "slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
         "shimmer": "shimmer 3s ease-in-out infinite",
+        "stagger-entrance": "staggerEntrance 0.6s ease-out forwards",
+        "image-fade-in": "imageFadeIn 0.5s ease-out forwards",
+        "reveal-backdrop": "revealBackdrop 0.4s ease-out forwards",
+        "reveal-modal-content": "revealModalContent 0.5s ease-out forwards",
+        "reveal-item": "revealItem 0.6s ease-out forwards",
+        "reveal-item-progressive": "revealItemProgressive 0.8s ease-out forwards",
+        "badge-appear": "badgeAppear 0.4s ease-out forwards",
       },
       keyframes: {
         slideDown: {
