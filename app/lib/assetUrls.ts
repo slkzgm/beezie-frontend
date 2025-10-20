@@ -83,6 +83,14 @@ export const ASSET_PATHS = {
       tether: "/assets/payment/crypto/tether.png",
     },
   },
+
+  sounds: {
+    click: "/assets/sounds/click.mp3",
+    success: "/assets/sounds/success.mp3",
+    reveal: "/assets/sounds/reveal.mp3",
+    swap: "/assets/sounds/swap.mp3",
+    confirm: "/assets/sounds/confirm.mp3",
+  },
 } as const;
 
 export type AssetPaths = typeof ASSET_PATHS;

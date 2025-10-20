@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { ASSET_PATHS } from "@/app/lib/assetUrls";
+import { useSound } from "@/hooks/useSound";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -33,11 +34,16 @@ export default function PaymentModal({
   const paymentAssets = ASSET_PATHS.payment;
   const clawAssets = ASSET_PATHS.claw;
 
+  // Sound effects
+  const clickSound = useSound(ASSET_PATHS.sounds.click, 0.2);
+  const confirmSound = useSound(ASSET_PATHS.sounds.confirm, 0.3);
+
   if (!isOpen) return null;
 
   const handleConfirm = () => {
     // TODO: Implement actual payment processing
     // console.log("Payment confirmed with:", selectedPayment);
+    confirmSound.play();
     if (onConfirm) {
       onConfirm();
     } else {
@@ -120,7 +126,10 @@ export default function PaymentModal({
 
               <div className="flex flex-col gap-3.5 md:gap-4 w-full">
                 <button
-                  onClick={() => setSelectedPayment("wallet")}
+                  onClick={() => {
+                    clickSound.play();
+                    setSelectedPayment("wallet");
+                  }}
                   className={`bg-[#1a1a1a] rounded-[10px] min-h-[84px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-4 transition-all duration-300 hover:bg-[#1a1a1a]/80 active:scale-[0.99] ${
                     selectedPayment === "wallet"
                       ? "border border-[#ffca28] shadow-gold-glow-sm"
@@ -155,7 +164,10 @@ export default function PaymentModal({
                 </button>
 
                 <button
-                  onClick={() => setSelectedPayment("card")}
+                  onClick={() => {
+                    clickSound.play();
+                    setSelectedPayment("card");
+                  }}
                   className={`bg-[#1a1a1a] rounded-[10px] min-h-[84px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-6 transition-all duration-300 hover:bg-[#1a1a1a]/80 active:scale-[0.99] ${
                     selectedPayment === "card"
                       ? "border border-[#ffca28] shadow-gold-glow-sm"
@@ -216,7 +228,10 @@ export default function PaymentModal({
                 </button>
 
                 <button
-                  onClick={() => setSelectedPayment("crypto")}
+                  onClick={() => {
+                    clickSound.play();
+                    setSelectedPayment("crypto");
+                  }}
                   className={`bg-[#1a1a1a] rounded-[10px] min-h-[78px] md:h-[70px] flex items-center justify-between gap-4 px-4 md:px-5 py-5 md:py-3 transition-all duration-300 hover:bg-[#1a1a1a]/80 active:scale-[0.99] ${
                     selectedPayment === "crypto"
                       ? "border border-[#ffca28] shadow-gold-glow-sm"

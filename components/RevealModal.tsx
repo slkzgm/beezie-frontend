@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSound } from "@/hooks/useSound";
+import { ASSET_PATHS } from "@/app/lib/assetUrls";
 
 interface RevealItem {
   id: string;
@@ -35,6 +37,11 @@ export default function RevealModal({
   const [useProgressiveReveal, setUseProgressiveReveal] = useState(true);
   const [revealedItems, setRevealedItems] = useState<Set<number>>(new Set());
 
+  // Sound effects
+  const revealSound = useSound(ASSET_PATHS.sounds.reveal, 0.3);
+  const swapSound = useSound(ASSET_PATHS.sounds.swap, 0.3);
+  const clickSound = useSound(ASSET_PATHS.sounds.click, 0.2);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -46,6 +53,14 @@ export default function RevealModal({
     for (let i = 0; i < items.length; i++) {
       const timer = setTimeout(() => {
         setRevealedItems(prev => new Set([...prev, i]));
+        // Play reveal sound for each item
+        if (i === 0) {
+          // First item plays immediately
+          revealSound.play();
+        } else {
+          // Subsequent items play with slight delay to avoid overlap
+          setTimeout(() => revealSound.play(), 50);
+        }
       }, 600 + (i * 400)); // 600ms base + 400ms per item
       timers.push(timer);
     }
@@ -54,6 +69,8 @@ export default function RevealModal({
       clearTimeout(entranceTimer);
       timers.forEach(timer => clearTimeout(timer));
     };
+    // revealSound is now memoized with stable reference, no need in deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, items.length]);
 
   // Separate countdown timer effect
@@ -90,13 +107,21 @@ export default function RevealModal({
     setSeconds(expirationSeconds);
   }, [initialItems, isOpen, expirationMinutes, expirationSeconds]);
 
+  // Memoize expensive calculations (before early return to follow hooks rules)
+  const selectedItems = useMemo(
+    () => items.filter((item) => item.isSelected && !item.isSwapped),
+    [items]
+  );
+  const selectedCount = selectedItems.length;
+  const totalSwapValue = useMemo(
+    () => selectedItems.reduce((sum, item) => sum + item.swapPrice, 0),
+    [selectedItems]
+  );
+
   if (!isOpen) return null;
 
-  const selectedItems = items.filter((item) => item.isSelected && !item.isSwapped);
-  const selectedCount = selectedItems.length;
-  const totalSwapValue = selectedItems.reduce((sum, item) => sum + item.swapPrice, 0);
-
   const handleToggleItem = (id: string) => {
+    clickSound.play();
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id && !item.isSwapped
@@ -126,6 +151,7 @@ export default function RevealModal({
   const handleSwapSelected = () => {
     if (selectedCount === 0) return;
     
+    swapSound.play();
     const selectedIds = items.filter(item => item.isSelected && !item.isSwapped).map(item => item.id);
     setSwappedItems(prev => new Set([...prev, ...selectedIds]));
     
@@ -139,6 +165,7 @@ export default function RevealModal({
   };
 
   const handleSwapSingle = (id: string) => {
+    swapSound.play();
     setSwappedItems(prev => new Set([...prev, id]));
     setItems((prevItems) =>
       prevItems.map((item) =>

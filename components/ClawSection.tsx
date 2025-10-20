@@ -7,6 +7,7 @@ import { ASSET_PATHS } from "@/app/lib/assetUrls";
 import PaymentModal from "./PaymentModal";
 import RevealModal from "./RevealModal";
 import { mockRevealItems } from "@/app/lib/mockRevealData";
+import { useSound } from "@/hooks/useSound";
 
 const heroImage = ASSET_PATHS.clawHero;
 const clawAssets = ASSET_PATHS.claw;
@@ -29,6 +30,11 @@ export default function ClawSection() {
   const [isCelebrating, setIsCelebrating] = useState(false);
   const isFirstRender = useRef(true);
 
+  // Sound effects
+  const clickSound = useSound(ASSET_PATHS.sounds.click, 0.2);
+  const successSound = useSound(ASSET_PATHS.sounds.success, 0.3);
+  const confirmSound = useSound(ASSET_PATHS.sounds.confirm, 0.3);
+
   const handlePaymentConfirm = () => {
     setIsPaymentModalOpen(false);
     setTimeout(() => {
@@ -38,6 +44,7 @@ export default function ClawSection() {
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText("https://beezie.io/ref/user123");
+    successSound.play();
     setIsCopied(true);
     setIsCelebrating(true);
   };
@@ -135,7 +142,10 @@ export default function ClawSection() {
               <div className="content-stretch flex gap-3 md:gap-[24px] items-start relative shrink-0 w-full" data-node-id="1:1557">
                 <div className="bg-[#232323] box-border content-stretch flex gap-4 md:gap-[24px] h-[45px] md:h-[51px] items-center justify-center overflow-clip px-4 md:px-[24px] py-[12px] md:py-[16px] relative rounded-[10px] shrink-0 transition-all duration-300 hover:bg-[#232323]/80" data-name="Buttons" data-node-id="1:1558">
                   <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    onClick={() => {
+                      clickSound.play();
+                      setQuantity(Math.max(1, quantity - 1));
+                    }}
                     type="button"
                     disabled={isDecreaseDisabled}
                     className={`relative shrink-0 size-[18px] md:size-[20px] transition-all duration-150 ${
@@ -150,7 +160,10 @@ export default function ClawSection() {
                     <p className="leading-[normal]">{quantity}</p>
                   </div>
                   <button
-                    onClick={() => setQuantity(quantity + 1)}
+                    onClick={() => {
+                      clickSound.play();
+                      setQuantity(quantity + 1);
+                    }}
                     type="button"
                     className="relative shrink-0 size-[18px] md:size-[20px] transition-all duration-150 hover:opacity-70 hover:scale-110 active:scale-90 active:opacity-50"
                     data-name="Frame"
@@ -160,7 +173,10 @@ export default function ClawSection() {
                   </button>
                 </div>
                 <button
-                  onClick={() => setIsPaymentModalOpen(true)}
+                  onClick={() => {
+                    confirmSound.play();
+                    setIsPaymentModalOpen(true);
+                  }}
                   className="group bg-gradient-gold box-border content-stretch flex flex-1 gap-[16px] h-[45px] md:h-[51px] items-center justify-center min-h-px overflow-hidden px-6 md:px-[72px] py-[12px] md:py-[16px] relative rounded-[10px] shadow-glow shrink-0 transition-all duration-300 hover:shadow-[0px_0px_20px_0px_rgba(255,176,0,0.6)] active:scale-[0.98]"
                   data-name="Buttons"
                   data-node-id="1:1564"
