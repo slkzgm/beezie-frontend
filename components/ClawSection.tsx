@@ -101,13 +101,13 @@ export default function ClawSection() {
 
   return (
     <div className="flex flex-col items-start gap-6 lg:flex-row relative w-full" data-node-id="1:1543">
-      <div className="relative rounded-[20px] w-full aspect-square lg:aspect-auto lg:flex-[800] lg:h-[800px]" data-node-id="1:1544">
+      <div className="relative rounded-[20px] overflow-hidden w-full aspect-square max-w-[800px] lg:max-w-[800px] lg:max-h-[800px] bg-[#0a0a0a]" data-node-id="1:1544">
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="pointer-events-none rounded-[20px] object-contain w-full h-full"
+          className="pointer-events-none w-full h-full object-cover"
           aria-label="Beezie claw machine in action"
         >
           <source src={heroVideo} type="video/mp4" />
