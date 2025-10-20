@@ -34,7 +34,6 @@ export default function RevealModal({
   const [seconds, setSeconds] = useState(expirationSeconds);
   const [isVisible, setIsVisible] = useState(false);
   const [swappedItems, setSwappedItems] = useState<Set<string>>(new Set());
-  const [useProgressiveReveal, setUseProgressiveReveal] = useState(true);
   const [revealedItems, setRevealedItems] = useState<Set<number>>(new Set());
 
   // Sound effects
@@ -94,7 +93,6 @@ export default function RevealModal({
   // Reset progressive reveal when modal opens
   useEffect(() => {
     if (isOpen) {
-      setUseProgressiveReveal(true);
       setRevealedItems(new Set());
     }
   }, [isOpen]);
@@ -152,9 +150,9 @@ export default function RevealModal({
     if (selectedCount === 0) return;
     
     swapSound.play();
-    const selectedIds = items.filter(item => item.isSelected && !item.isSwapped).map(item => item.id);
-    setSwappedItems(prev => new Set([...prev, ...selectedIds]));
-    
+    const selectedIds = selectedItems.map((item) => item.id);
+    setSwappedItems((prev) => new Set([...prev, ...selectedIds]));
+
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.isSelected && !item.isSwapped
@@ -166,7 +164,7 @@ export default function RevealModal({
 
   const handleSwapSingle = (id: string) => {
     swapSound.play();
-    setSwappedItems(prev => new Set([...prev, id]));
+    setSwappedItems((prev) => new Set([...prev, id]));
     setItems((prevItems) =>
       prevItems.map((item) =>
         item.id === id ? { ...item, isSelected: false, isSwapped: true } : item
@@ -176,7 +174,6 @@ export default function RevealModal({
 
   const handleDownloadPull = () => {
     // TODO: Implement actual download functionality
-    // console.log("Downloading pull for item:", id);
   };
 
   const isTimerWarning = minutes === 0 && seconds <= 30;
@@ -221,9 +218,7 @@ export default function RevealModal({
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3 md:gap-4 p-3 md:p-4">
                 {items.map((item, index) => {
                   const isRevealed = revealedItems.has(index);
-                  const animationClass = useProgressiveReveal 
-                    ? 'reveal-item-progressive' 
-                    : 'reveal-item';
+                  const animationClass = "reveal-item-progressive";
                   return (
                     <div
                     key={item.id}
