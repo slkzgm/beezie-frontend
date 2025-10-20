@@ -36,7 +36,8 @@ export default function PaymentModal({
   if (!isOpen) return null;
 
   const handleConfirm = () => {
-    console.log("Payment confirmed with:", selectedPayment);
+    // TODO: Implement actual payment processing
+    // console.log("Payment confirmed with:", selectedPayment);
     if (onConfirm) {
       onConfirm();
     } else {

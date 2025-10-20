@@ -148,7 +148,8 @@ export default function RevealModal({
   };
 
   const handleDownloadPull = (id: string) => {
-    console.log("Downloading pull for item:", id);
+    // TODO: Implement actual download functionality
+    // console.log("Downloading pull for item:", id);
   };
 
   const isTimerWarning = minutes === 0 && seconds <= 30;
