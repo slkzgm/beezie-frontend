@@ -107,6 +107,7 @@ export default function ClawSection() {
           loop
           muted
           playsInline
+          preload="auto"
           className="pointer-events-none w-full h-full object-cover"
           aria-label="Beezie claw machine in action"
         >
