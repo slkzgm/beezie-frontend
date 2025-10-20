@@ -147,7 +147,7 @@ export default function RevealModal({
     );
   };
 
-  const handleDownloadPull = (id: string) => {
+  const handleDownloadPull = () => {
     // TODO: Implement actual download functionality
     // console.log("Downloading pull for item:", id);
   };
@@ -282,7 +282,7 @@ export default function RevealModal({
                         <button
                           onClick={(event) => {
                             event.stopPropagation();
-                            handleDownloadPull(item.id);
+                            handleDownloadPull();
                           }}
                           className="absolute left-2 bottom-2 bg-white rounded-[4px] p-1 shadow-[0px_0px_7px_0px_rgba(0,0,0,0.15)] download-button"
                           type="button"
@@ -314,7 +314,7 @@ export default function RevealModal({
 
                       {item.isSwapped ? (
                         <button
-                          onClick={() => handleDownloadPull(item.id)}
+                          onClick={() => handleDownloadPull()}
                           className="bg-[#3a3a3a] h-[36px] md:h-[40px] rounded-[7px] flex items-center justify-center gap-2 download-button"
                         >
                           <div className="w-4 h-4 relative">

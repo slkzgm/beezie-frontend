@@ -5,10 +5,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /**
-   * Force Next.js to treat this directory as the workspace root.
-   * Prevents warnings when another pnpm-lock.yaml exists up the tree.
-   */
   outputFileTracingRoot: path.join(__dirname),
   eslint: {
     ignoreDuringBuilds: false,
