@@ -9,7 +9,7 @@ import RevealModal from "./RevealModal";
 import { mockRevealItems } from "@/app/lib/mockRevealData";
 import { useSound } from "@/hooks/useSound";
 
-const heroImage = ASSET_PATHS.clawHero;
+const heroVideo = ASSET_PATHS.clawHeroVideo;
 const clawAssets = ASSET_PATHS.claw;
 const confettiIcons = clawAssets.confetti;
 const UNIT_PRICE = 30;
@@ -102,14 +102,16 @@ export default function ClawSection() {
   return (
     <div className="flex flex-col items-start gap-6 lg:flex-row relative w-full" data-node-id="1:1543">
       <div className="relative rounded-[20px] w-full aspect-square lg:aspect-auto lg:flex-[800] lg:h-[800px]" data-node-id="1:1544">
-        <Image
-          alt="Beezie claw machine"
-          src={heroImage}
-          fill
-          className="pointer-events-none rounded-[20px] object-contain"
-          sizes="(max-width: 1024px) 100vw, 800px"
-          priority
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="pointer-events-none rounded-[20px] object-contain w-full h-full"
+          aria-label="Beezie claw machine in action"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
       </div>
       <div className="flex flex-col gap-4 md:gap-6 items-start relative w-full lg:flex-[516]" data-node-id="1:1545">
         <div className="bg-[#1a1a1a] box-border content-stretch flex flex-col gap-5 md:gap-[24px] items-start overflow-clip p-5 md:p-[32px] relative rounded-[20px] shrink-0 w-full" data-node-id="1:1546">
