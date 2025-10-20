@@ -10,6 +10,7 @@ import { mockRevealItems } from "@/app/lib/mockRevealData";
 import { useSound } from "@/hooks/useSound";
 
 const heroVideo = ASSET_PATHS.clawHeroVideo;
+const heroPoster = ASSET_PATHS.clawHeroPoster;
 const clawAssets = ASSET_PATHS.claw;
 const confettiIcons = clawAssets.confetti;
 const UNIT_PRICE = 30;
@@ -108,6 +109,7 @@ export default function ClawSection() {
           muted
           playsInline
           preload="auto"
+          poster={heroPoster}
           className="pointer-events-none w-full h-full object-cover"
           aria-label="Beezie claw machine in action"
         >

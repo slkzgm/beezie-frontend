@@ -4,6 +4,7 @@ export const ASSET_PATHS = {
   clawMachine: "/assets/claw/claw-machine.png",
   clawHero: "/assets/claw/claw-hero.png",
   clawHeroVideo: "/assets/claw/claw-hero.mp4",
+  clawHeroPoster: "/assets/claw/claw-hero-poster.jpg",
   coinIcon: "/assets/icons/coin.svg",
   profileImage: "/assets/avatars/profile.png",
   viewOddsIcon: "/assets/icons/view-odds.svg",
