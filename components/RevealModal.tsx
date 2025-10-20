@@ -32,10 +32,6 @@ export default function RevealModal({
   const [seconds, setSeconds] = useState(expirationSeconds);
 
   useEffect(() => {
-    setItems(initialItems);
-  }, [initialItems]);
-
-  useEffect(() => {
     if (!isOpen) return;
 
     const timer = setInterval(() => {
@@ -49,6 +45,14 @@ export default function RevealModal({
 
     return () => clearInterval(timer);
   }, [isOpen, minutes, seconds]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setItems(initialItems);
+    setMinutes(expirationMinutes);
+    setSeconds(expirationSeconds);
+  }, [initialItems, isOpen, expirationMinutes, expirationSeconds]);
 
   if (!isOpen) return null;
 

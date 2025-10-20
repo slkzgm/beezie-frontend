@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 import { ASSET_PATHS } from "@/app/lib/assetUrls";
 import PaymentModal from "./PaymentModal";
@@ -77,6 +77,20 @@ export default function ClawSection() {
   const totalPrice = UNIT_PRICE * quantity;
   const totalPoints = POINTS_PER_PULL * quantity;
   const totalAverageValue = AVERAGE_VALUE * quantity;
+  const revealItems = useMemo(() => {
+    if (quantity <= 0) return [];
+
+    return Array.from({ length: quantity }, (_, index) => {
+      const baseItem = mockRevealItems[index % mockRevealItems.length];
+
+      return {
+        ...baseItem,
+        id: `${baseItem.id}-${index + 1}`,
+        isSelected: false,
+        isSwapped: false,
+      };
+    });
+  }, [quantity]);
 
   return (
     <div className="flex flex-col items-start gap-6 lg:flex-row relative w-full" data-node-id="1:1543">
@@ -281,7 +295,7 @@ export default function ClawSection() {
       <RevealModal
         isOpen={isRevealModalOpen}
         onClose={() => setIsRevealModalOpen(false)}
-        items={mockRevealItems}
+        items={revealItems}
         expirationMinutes={4}
         expirationSeconds={29}
       />
